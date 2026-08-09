@@ -2,13 +2,17 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
 
-    sourceCompatibility = JavaVersion.VERSION_17
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
 
     configurations.configureEach {
         resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
             select("com.google.guava:guava:0")
         }
-        // and/or
+
         resolutionStrategy.capabilitiesResolution.withCapability("com.google.guava:listenablefuture") {
             select("com.google.guava:guava:0")
         }
@@ -20,33 +24,36 @@ subprojects {
         }
     }
 
-    // Include dependent libraries in archive.
     jar {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE // allow duplicates
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
         from {
-            configurations.extra.collect { it.isDirectory() ? it : zipTree(it) }
+            configurations.extra.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
         }
+
         archivesBaseName = 'RecipeManager'
     }
 
     repositories {
         mavenCentral()
+
         maven {
-            name 'Spigot/Bukkit maven repo'
-            url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+            name = "papermc"
+            url = "https://repo.papermc.io/repository/maven-public/"
         }
+
         maven {
-            name 'Jitpack' // For Vault
-            url 'https://jitpack.io'
+            name = "Spigot/Bukkit maven repo"
+            url = "https://hub.spigotmc.org/nexus/content/groups/public/"
         }
+
         maven {
-            name 'Alt source for Spigot'
-            url 'https://repo.aikar.co/nexus/content/repositories/aikar/'
+            name = "Jitpack"
+            url = "https://jitpack.io"
         }
-        maven {
-            name 'Alt2 source for Spigot'
-            url 'https://maven.elmakers.com/repository/'
-        }
+
         mavenLocal()
     }
 

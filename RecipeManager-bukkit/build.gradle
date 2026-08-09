@@ -1,5 +1,5 @@
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:26.2.build.+'
     implementation project(':RecipeManager-common')
 }
 
