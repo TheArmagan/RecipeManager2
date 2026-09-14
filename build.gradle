@@ -23,7 +23,9 @@ subprojects {
     }
 
     configurations {
-        resolvable("extra") {
+        dependencyScope("extra")
+        resolvable("extraClasspath") {
+            extendsFrom extra
             transitive = false
         }
     }
@@ -33,7 +35,7 @@ subprojects {
         archiveBaseName = 'RecipeManager'
 
         from {
-            configurations.extra.collect {
+            configurations.extraClasspath.collect {
                 it.isDirectory() ? it : zipTree(it)
             }
         }
