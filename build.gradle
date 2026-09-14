@@ -8,10 +8,6 @@ subprojects {
         }
     }
 
-    tasks.withType(JavaCompile).configureEach {
-        options.release = 21
-    }
-
     configurations.configureEach {
         resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
             select("com.google.guava:guava:0")
