@@ -8,6 +8,10 @@ subprojects {
         }
     }
 
+    tasks.withType(JavaCompile).configureEach {
+        options.release = 21
+    }
+
     configurations.configureEach {
         resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
             select("com.google.guava:guava:0")
@@ -19,21 +23,20 @@ subprojects {
     }
 
     configurations {
-        extra {
-            transitive false
+        resolvable("extra") {
+            transitive = false
         }
     }
 
     jar {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        archiveBaseName = 'RecipeManager'
 
         from {
             configurations.extra.collect {
                 it.isDirectory() ? it : zipTree(it)
             }
         }
-
-        archivesBaseName = 'RecipeManager'
     }
 
     repositories {
